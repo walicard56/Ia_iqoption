@@ -1,51 +1,115 @@
-This automated trading bot was developed to operate in the financial market using LSTM neural networks with data provided by IqOption. It is designed to make price predictions and execute buying and selling operations in an automated way, with the ability to continuously learn and adjust based on the results of operations.
+# 🧠 AI Trading Bot — IQ Option (LSTM)
 
-Functionalities
-Data Preprocessing:
+> Self-improving automated trading bot using LSTM neural networks to predict price movements and execute operations on IQ Option.
 
-The bot collects data from various financial assets and applies a series of transformations, including normalization and calculation of technical indicators such as moving averages (MA), Relative Strength Index (RSI), and Stochastic (%K and %D).
-Prediction with LSTM:
+![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat-square&logo=python&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white)
+![Keras](https://img.shields.io/badge/Keras-D00000?style=flat-square&logo=keras&logoColor=white)
+![IQ Option](https://img.shields.io/badge/IQ_Option_API-automation-blue?style=flat-square)
+![License](https://img.shields.io/github/license/walicard56/Ia_iqoption?style=flat-square)
 
-It uses an LSTM neural network to make predictions based on sequences of historical data. The network architecture is configured to capture temporal patterns and market trends.
-Execution of Operations:
+---
 
-Based on the predictions, the bot executes buy (CALL) or sell (PUT) operations on IqOption. Execution is done automatically, using integrated functions to place bets and check the results of operations.
-Continuous Learning:
+## Overview
 
-The bot is designed to continually learn from operation data. It stores the results of operations and updates the model periodically, allowing it to adjust and improve its accuracy over time.
-Periodic Model Update:
+This bot uses **Long Short-Term Memory (LSTM)** neural networks to analyze historical candlestick data from IQ Option, calculate technical indicators, and predict the direction of price movements. Based on predictions, it autonomously executes buy or sell orders.
 
-A separate thread is responsible for periodically updating the model with new operation data. This ensures that the model is always updated and improved based on the latest results.
-Code Structure
-Preprocessing:
+After each trading session, the model stores results and **retrains itself in the background**, continuously adapting to market behavior over time.
 
-The preprocess_prediction(iq) function collects and processes asset data, calculating the necessary indicators and normalizing the data for input into the LSTM model.
-Model and Training:
+---
 
-The LSTM model is defined and trained using historical data. The train_data() function is responsible for initializing and training the model with historical data.
-The update_model_periodically() function periodically updates the model with new operation data.
-Execution and Monitoring:
+## How It Works
 
-The bot's main loop (main()) performs buy and sell operations based on model predictions and stores the results for future model updating.
-How to use
-Initial setting:
+```
+Market Data → Feature Engineering → LSTM Model → Prediction → Execute Order
+                                         ↑
+                              Background Retraining (periodic)
+```
 
-Clone this repository and install the necessary dependencies.
-Configure IqOption credentials in the script.
-Model Training:
+1. **Data Collection** — Fetches live candle data from IQ Option API
+2. **Feature Engineering** — Computes Moving Averages, RSI, and other indicators
+3. **Prediction** — LSTM model outputs buy/sell signal with confidence score
+4. **Execution** — Sends order to IQ Option if confidence exceeds threshold
+5. **Self-improvement** — Saves results, retrains model periodically
 
-Run the script to train the initial model using historical data.
-Bot Execution:
+---
 
-Launch the bot so that it automatically starts operating in the market, making predictions and executing buy and sell operations.
-Continuous Update:
+## Project Structure
 
-The bot will continue to learn and update the model based on the results of operations, improving its accuracy over time.
-Requirements
-Python 3.7 or higher
-TensorFlow
-Pandas
-NumPy
+```
+├── iq.py           # IQ Option connection and order execution
+├── training.py     # LSTM model training pipeline
+├── testing.py      # Model evaluation and backtesting
+├── models/         # Saved model checkpoints
+└── .gitignore
+```
+
+---
+
+## Requirements
+
+```
+tensorflow
+pandas
+numpy
 scikit-learn
-Contributions
-Feel free to contribute improvements, bug fixes or new features. Open an issue or send a pull request with your suggestions.
+iqoptionapi
+```
+
+---
+
+## Installation
+
+```bash
+git clone https://github.com/walicard56/Ia_iqoption.git
+cd Ia_iqoption
+pip install -r requirements.txt
+```
+
+---
+
+## Usage
+
+**Train the model:**
+```bash
+python training.py
+```
+
+**Run live trading:**
+```bash
+python iq.py
+```
+
+**Evaluate performance:**
+```bash
+python testing.py
+```
+
+---
+
+## Configuration
+
+Inside `iq.py`, configure your credentials and trading parameters:
+
+```python
+EMAIL      = "your_iqoption_email"
+PASSWORD   = "your_iqoption_password"
+ASSET      = "EURUSD"        # Trading pair
+TIMEFRAME  = 1               # Candle duration in minutes
+AMOUNT     = 2               # Trade amount in USD
+THRESHOLD  = 0.65            # Minimum confidence to execute trade
+```
+
+---
+
+## ⚠️ Disclaimer
+
+This project is for **educational and research purposes only**.  
+AI-based trading does not guarantee profits. Use at your own risk.  
+The author is not responsible for any financial losses.
+
+---
+
+## Author
+
+**Walisson Jose** · [GitHub](https://github.com/walicard56) · [Portfolio](https://walicard56.github.io/Portifolio_wali)
